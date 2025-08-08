@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.mapper.CustomerpreferenceMapper">
+    <select id="selectCustomerpreferenceVo" resultType="com.cy.vo.CustomerpreferenceVo">
+        select cp.id,
+               cp.customer_id,
+               c.customer_sex,
+               c.customer_age,
+               c.customer_name,
+               cp.preferences,
+               cp.attention,
+               cp.remark
+        from customerpreference cp
+            join customer c
+                on cp.customer_id = c.id
+        <where>
+            cp.is_deleted = 0
+            <if test="customerName != null and customerName != ''">
+                and c.customer_name like concat('%',#{customerName},'%')
+            </if>
+        </where>
+        limit #{currentPage}, #{pageSize}
+    </select>
+
+    <select id="selectCustomerpreferenceCount" resultType="com.cy.vo.CountVo">
+        select count(*) as count
+        from customerpreference cp
+        join customer c
+        on cp.customer_id = c.id
+        <where>
+            cp.is_deleted = 0
+            <if test="customerName != null and customerName != ''">
+                and c.customer_name like concat('%',#{customerName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

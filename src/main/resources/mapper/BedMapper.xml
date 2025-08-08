@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.mapper.BedMapper">
+    <select id="selectBedCount" resultType="com.cy.vo.ShowBedVo">
+        SELECT
+        (SELECT COUNT(1) FROM bed) AS totalBed,
+        (SELECT COUNT(1) FROM bed WHERE bed_status = 1) AS freeBed,
+        (SELECT COUNT(1) FROM bed WHERE bed_status = 2) AS usedBed,
+        (SELECT COUNT(1) FROM bed WHERE bed_status = 3) AS outBed
+    </select>
+</mapper>

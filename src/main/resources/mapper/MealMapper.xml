@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.mapper.MealMapper">
+    <select id="listMealPage" resultType="com.cy.vo.MealVo">
+        select m.id,
+               m.week_day,
+               m.meal_type,
+               m.taste,
+               m.food_id,
+               f.food_name,
+               f.food_type,
+               f.price,
+               f.is_halal,
+               f.food_img
+        from meal m
+                 join food f
+                      on f.id = m.food_id
+        <where>
+            m.is_deleted = 0
+            <if test="weekDay != null and weekDay != ''">
+                and week_day = #{weekDay}
+            </if>
+            <if test="mealType != null and mealType != ''">
+                and meal_type = #{mealType}
+            </if>
+        </where>
+        limit #{currentPage}, #{pageSize}
+    </select>
+
+    <select id="selectMealCount" resultType="com.cy.vo.CountVo">
+        select
+            count(m.id) as count
+        from meal m
+        join food f
+        on f.id = m.food_id
+        <where>
+            m.is_deleted = 0
+            <if test="weekDay != null and weekDay != ''">
+                and week_day = #{weekDay}
+            </if>
+            <if test="mealType != null and mealType != ''">
+                and meal_type = #{mealType}
+            </if>
+        </where>
+    </select>
+</mapper>

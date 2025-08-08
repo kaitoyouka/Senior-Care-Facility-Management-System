@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.mapper.CustomernurseitemMapper">
+    <select id="listCustomerItem" resultType="com.cy.vo.CustomerNurseItemVo">
+        select cni.id,
+               cni.item_id,
+               cni.custormer_id,
+               cni.level_id,
+               cni.nurse_number,
+               cni.is_deleted,
+               cni.buy_time,
+               cni.maturity_time,
+               c.customer_name,
+               nc.serial_number,
+               nc.nursing_name,
+               nc.service_price
+        from customernurseitem cni
+                 left join customer c
+                           on cni.custormer_id = c.id
+                 left join nursecontent nc
+                           on cni.item_id = nc.id
+        where cni.is_deleted = 0
+          and cni.custormer_id = #{customerId}
+        limit #{currentPage}, #{pageSize};
+    </select>
+
+    <select id="selectCustomerItemCount" resultType="com.cy.vo.CountVo">
+        select count(*) as count
+        from customernurseitem cni
+                 left join customer c
+                           on cni.custormer_id = c.id
+                 left join nursecontent nc
+                           on cni.item_id = nc.id
+        where cni.is_deleted = 0
+          and cni.custormer_id = #{customerId}
+    </select>
+</mapper>
